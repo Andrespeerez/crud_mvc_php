@@ -8,10 +8,16 @@ FLUSH PRIVILEGES;
 
 USE mvc_crud;
 
---DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS cliente;
 
 CREATE TABLE cliente(
 	id int(11) primary key auto_increment,
+    email varchar(100) unique not null,
+    contrasena varchar(255) not null,
     nombre varchar(32),
-    email varchar(100)
+    apellidos varchar(100),
+    direccion varchar(100),
+    poblacion varchar(32),
+    provincia varchar(32),
+    fecha_nacimiento datetime
 );

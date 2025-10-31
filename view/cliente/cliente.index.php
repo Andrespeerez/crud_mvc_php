@@ -9,7 +9,13 @@
         <tr class="text-center">
             <th>Id</th>
             <th>Nombre</th>
+            <th>Apellidos</th>
             <th>Email</th>
+            <th>Contraseña</th>
+            <th>Dirección</th>
+            <th>Población</th>
+            <th>Provincia</th>
+            <th>Fecha Nacimiento</th>
             <th></th>
         </tr>
     </thead>
@@ -21,7 +27,13 @@
         <tr>
             <td style="text-align: right; width: 5%;"><?= htmlspecialchars($fila->id) ?></td>
             <td><?= htmlspecialchars($fila->nombre) ?></td>
+            <td><?= htmlspecialchars($fila->apellidos) ?></td>
             <td><?= htmlspecialchars($fila->email) ?></td>
+            <td><?= htmlspecialchars($fila->contrasena) ?></td>
+            <td><?= htmlspecialchars($fila->direccion) ?></td>
+            <td><?= htmlspecialchars($fila->poblacion) ?></td>
+            <td><?= htmlspecialchars($fila->provincia) ?></td>
+            <td><?= htmlspecialchars($fila->fecha_nacimiento) ?></td>
             <td>
                 <a href="<?= URLSITE . 'index.php?c=cliente&m=editar&id=' . $fila->id ?>">
                     <button type="button" class="btn btn-success">
@@ -41,7 +53,7 @@
         else:   
         ?>
         <tr>
-            <td colspan="4">No hay clientes</td>
+            <td colspan="10" class="text-center">No hay clientes</td>
         </tr>
         <?php 
         endif;

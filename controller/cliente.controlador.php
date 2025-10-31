@@ -72,7 +72,7 @@ abstract class ClienteControlador
     {
         $cliente = new ClienteModelo();
 
-        ClienteControlador::validarYAsignar($cliente);
+        ClienteControlador::validarYAsignar($cliente, true);
 
         if ($cliente->insertar() == 1) // <-- Llamo al Modelo para que inserte en la bbdd
         {
@@ -145,8 +145,14 @@ abstract class ClienteControlador
         }
 
         $cliente->setId((int) $_GET['id']);
+        if (!$cliente->seleccionar())
+        {
+            $_SESSION['CRUDMVC_ERROR'] = $cliente->getError();
+            header("location: " . URLSITE . "view/error.php");
+            die();
+        }
 
-        ClienteControlador::validarYAsignar($cliente);
+        ClienteControlador::validarYAsignar($cliente, false);
 
         if ( ($cliente->modificar() == 1) || ($cliente->getError() == null) )
         {
@@ -207,17 +213,64 @@ abstract class ClienteControlador
      * Si lanza una excepción, redirige a la página de error
      * mostrando el correspondiente mensaje guardado en $_SESSION["CRUDMVC_ERROR"]
      * 
-     * @param ClienteModelo $cliente
+     * @param ClienteModelo $cliente Por referencia
+     * @param bool $hashear  Si requiere hashear la contraseña, por defecto False
      * @return void
      */
-    public static function validarYAsignar(ClienteModelo &$cliente) : void
+    public static function validarYAsignar(ClienteModelo &$cliente, bool $insertar = false) : void
     {
         try
         {
-            $cliente->setNombre($_POST['nombre']);  // <-- Validaciones internas | throw InvalidArgumentException
-            $cliente->setEmail($_POST['email']);     // <-- Validaciones internas | throw InvalidArgumentException
+            // Validaciones de formato
+            if ($insertar == true)
+            {
+
+                if( ! filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+                {
+                    throw new InvalidArgumentException("Email mal formateado");
+                }
+            
+                $cliente->setEmail($_POST['email']); 
+            }
+
+
+
+            $contrasenaPlana = $_POST["contrasena"] ?? '';
+            if ($insertar == true && !empty($contrasenaPlana) )
+            {
+                if (strlen($contrasenaPlana) < 8)
+                {
+                    throw new InvalidArgumentException("Contraseña debe tener al menos 8 caracteres.");
+                }
+                
+                $cliente->setContrasena($contrasenaPlana);
+            }
+
+            $fechaRecibida = $_POST['fecha_nacimiento'];
+            $formatoEntrada = 'Y-m-d';
+
+            $objetoFecha = DateTime::createFromFormat($formatoEntrada, $fechaRecibida);
+  
+            if ($objetoFecha === false) 
+            {             
+                throw new InvalidArgumentException("Formato de fecha inválido.");
+            }
+
+            // Asignaciones           
+            $cliente->setNombre($_POST['nombre']);
+            $cliente->setApellidos($_POST['apellidos']);
+            $cliente->setDireccion($_POST['direccion']);
+            $cliente->setPoblacion($_POST['poblacion']);
+            $cliente->setProvincia($_POST['provincia']);
+            $cliente->setFechaNacimiento($objetoFecha);  
         }
         catch (InvalidArgumentException $e)
+        {
+            $_SESSION["CRUDMVC_ERROR"] = $e->getMessage();
+            header("location: " . URLSITE . "view/error.php");
+            die();
+        }
+        catch (Exception $e)
         {
             $_SESSION["CRUDMVC_ERROR"] = $e->getMessage();
             header("location: " . URLSITE . "view/error.php");

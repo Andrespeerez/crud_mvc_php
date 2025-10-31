@@ -20,8 +20,15 @@ require_once("model/bd/bd.php");
 class ClienteModelo extends BD
 {
     private int $id = 0;
-    private string $nombre = "";
+    
     private string $email = "";
+    private string $contrasenaHash = "";
+    private string $nombre = "";
+    private string $apellidos = "";
+    private string $direccion = "";
+    private string $poblacion = "";
+    private string $provincia = "";
+    private ?DateTime $fechaNacimiento = null;
 
     public ?array $filas = null;
 
@@ -34,11 +41,19 @@ class ClienteModelo extends BD
      */
     public function insertar() : int
     {
-        $sql = "INSERT INTO cliente VALUES (default, :nombre, :email)";
+        $sql = "INSERT INTO cliente VALUES 
+                (default, :email, :contrasena, :nombre, :apellidos, 
+                :direccion, :poblacion, :provincia, :fecha_nacimiento)";
 
         $param = [
-            "nombre" => $this->nombre, 
-            "email"  => $this->email,
+            "email"             => $this->email,
+            "contrasena"        => $this->contrasenaHash,
+            "nombre"            => $this->nombre, 
+            "apellidos"         => $this->apellidos,
+            "direccion"         => $this->direccion,
+            "poblacion"         => $this->poblacion,
+            "provincia"         => $this->provincia,
+            "fecha_nacimiento"  => $this->getFechaNacimientoParaBD(),
         ];
 
         return $this->_ejecutar($sql, $param);
@@ -58,12 +73,21 @@ class ClienteModelo extends BD
             return 0;
         }
 
-        $sql = "UPDATE cliente SET nombre = :nombre, email = :email WHERE id = :id";
+        $sql = "UPDATE cliente SET email = :email, contrasena = :contrasena, nombre = :nombre,
+                apellidos = :apellidos, direccion = :direccion, poblacion = :poblacion,
+                provincia = :provincia, fecha_nacimiento = :fecha_nacimiento      
+                WHERE id = :id";
 
         $param = [
-            "nombre" => $this->nombre,
-            "email"  => $this->email,
-            "id"     => $this->id,
+            "id"                => $this->id,
+            "email"             => $this->email,
+            "contrasena"        => $this->contrasenaHash,
+            "nombre"            => $this->nombre, 
+            "apellidos"         => $this->apellidos,
+            "direccion"         => $this->direccion,
+            "poblacion"         => $this->poblacion,
+            "provincia"         => $this->provincia,
+            "fecha_nacimiento"  => $this->getFechaNacimientoParaBD(),            
         ];
 
         return $this->_ejecutar($sql, $param);
@@ -129,8 +153,21 @@ class ClienteModelo extends BD
         // Aplicamos las propiedades recibidas
         if ($this->id != 0)
         {
-            $this->setNombre($this->filas[0]->nombre);
-            $this->setEmail($this->filas[0]->email); 
+            $objeto = $this->filas[0];
+
+            $this->setEmail($objeto->email);
+            $this->contrasenaHash = $objeto->contrasena; // Directo, porque el set hace hash
+           
+            $this->setNombre($objeto->nombre);
+            $this->setApellidos($objeto->apellidos);
+            $this->setDireccion($objeto->direccion);
+            $this->setPoblacion($objeto->poblacion);
+            $this->setProvincia($objeto->provincia);
+
+            $fechaString = $objeto->fecha_nacimiento;
+            $fechaDataTime = DateTime::createFromFormat('Y-m-d H:i:s', $fechaString);
+            // throw new Exception($fechaString); // para debugging
+            $this->setFechaNacimiento($fechaDataTime);
         }
 
         return true;
@@ -150,22 +187,6 @@ class ClienteModelo extends BD
         $this->id = $id;
     }
 
-    public function getNombre() : string
-    {
-        return $this->nombre;
-    }
-
-    public function setNombre(string $nombre) : void
-    {
-        // Rechazo porque no cabe en la base de datos varchar(32)
-        if (strlen($nombre) > 32)
-        {
-            throw new InvalidArgumentException("Nombre demasiado largo");
-        }
-
-        $this->nombre = $nombre;
-    }
-
     public function getEmail() : string
     {
         return $this->email;
@@ -182,6 +203,117 @@ class ClienteModelo extends BD
         }
 
         $this->email = $email;
+    }
+
+    public function getContrasena(): string
+    {
+        return $this->contrasenaHash;
+    }
+
+    public function setContrasena(string $contrasena): void
+    {
+        if (strlen($contrasena) > 255)
+        {
+            throw new InvalidArgumentException("Contraseña Inválida");
+        }
+
+        $this->contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
+    }
+
+
+    public function getNombre() : string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre) : void
+    {
+        // Rechazo porque no cabe en la base de datos varchar(32)
+        if (strlen($nombre) > 32)
+        {
+            throw new InvalidArgumentException("Nombre demasiado largo");
+        }
+
+        $this->nombre = $nombre;
+    }
+
+    public function getApellidos() : string
+    {
+        return $this->apellidos;
+    }
+
+    public function setApellidos(string $apellidos) : void
+    {
+        // Rechazo porque no cabe en la base de datos varchar(100)
+        if (strlen($apellidos) > 100)
+        {
+            throw new InvalidArgumentException("Apellidos demasiado largo");
+        }
+
+        $this->apellidos = $apellidos;
+    }
+
+    public function getDireccion() : string
+    {
+        return $this->direccion;
+    }
+
+    public function setDireccion(string $direccion) : void
+    {
+        // Rechazo porque no cabe en la base de datos varchar(100)
+        if (strlen($direccion) > 100)
+        {
+            throw new InvalidArgumentException("Dirección demasiado largo");
+        }
+
+        $this->direccion = $direccion;
+    }
+
+    public function getPoblacion() : string
+    {
+        return $this->poblacion;
+    }
+
+    public function setPoblacion(string $poblacion) : void
+    {
+        // Rechazo porque no cabe en la base de datos varchar(32)
+        if (strlen($poblacion) > 32)
+        {
+            throw new InvalidArgumentException("Población demasiado largo");
+        }
+
+        $this->poblacion = $poblacion;
+    }
+
+    public function getProvincia() : string
+    {
+        return $this->poblacion;
+    }
+
+    public function setProvincia(string $provincia) : void
+    {
+        // Rechazo porque no cabe en la base de datos varchar(32)
+        if (strlen($provincia) > 32)
+        {
+            throw new InvalidArgumentException("Provincia demasiado largo");
+        }
+
+        $this->provincia = $provincia;
+    }
+
+    public function getFechaNacimiento() : DateTime
+    {
+        return $this->fechaNacimiento;
+    }
+
+    public function setFechaNacimiento(DateTime $fechaNacimiento) : void
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+    }
+
+    public function getFechaNacimientoParaBD() : string
+    {
+        return $this->fechaNacimiento->format('Y-m-d');
     }
 
 }

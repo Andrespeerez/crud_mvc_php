@@ -24,7 +24,7 @@
         if ($cliente->filas) :
             foreach ($cliente->filas as $fila) :
         ?>
-        <tr>
+        <tr class="text-center">
             <td style="text-align: right; width: 5%;"><?= htmlspecialchars($fila->id) ?></td>
             <td><?= htmlspecialchars($fila->nombre) ?></td>
             <td><?= htmlspecialchars($fila->apellidos) ?></td>
@@ -60,7 +60,7 @@
         ?>
         <tfoot>
             <tr>
-                <td colspan="4">
+                <td colspan="10">
                     <a href="<?= URLSITE . '?c=cliente&m=nuevo' ?>">
                         <button type="button" class="btn btn-primary">
                             Nuevo

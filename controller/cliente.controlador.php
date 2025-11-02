@@ -49,7 +49,6 @@ abstract class ClienteControlador
      * 
      * En mi caso no mando una opción NUEVO,
      * porque tengo clientes separado en 3 vistas distintas
-     * (ahora me arrepiento ...)
      * 
      * @return void
      */
@@ -81,10 +80,7 @@ abstract class ClienteControlador
         }
         else
         {
-            $_SESSION["CRUDMVC_ERROR"] = $cliente->getError();
-
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error($cliente->getError());
         }
     }
 
@@ -103,9 +99,7 @@ abstract class ClienteControlador
 
         if (!isset($_GET['id']))
         {
-            $_SESSION["CRUDMVC_ERROR"] = "El ID de usuario no puede ser null o Undefined";
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error("El ID de usuario no puede ser null o Undefined");
         }
 
         $cliente->setId((int) $_GET['id']);
@@ -116,10 +110,7 @@ abstract class ClienteControlador
         }
         else
         {
-            $_SESSION["CRUDMVC_ERROR"] = $cliente->getError();
-
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error($cliente->getError());
         }
     }
 
@@ -139,17 +130,13 @@ abstract class ClienteControlador
 
         if (!isset($_GET['id']))
         {
-            $_SESSION["CRUDMVC_ERROR"] = "El ID de usuario no puede ser null o Undefined";
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error("El ID de usuario no puede ser null o Undefined");
         }
 
         $cliente->setId((int) $_GET['id']);
         if (!$cliente->seleccionar())
         {
-            $_SESSION['CRUDMVC_ERROR'] = $cliente->getError();
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error($cliente->getError());
         }
 
         ClienteControlador::validarYAsignar($cliente, false);
@@ -161,10 +148,7 @@ abstract class ClienteControlador
         }
         else
         {
-            $_SESSION['CRUDMVC_ERROR'] = $cliente->getError();
-
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error($cliente->getError());
         }
     }
 
@@ -184,9 +168,7 @@ abstract class ClienteControlador
 
         if (!isset($_GET['id']))
         {
-            $_SESSION["CRUDMVC_ERROR"] = "El ID de usuario no puede ser null o Undefined";
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error("El ID de usuario no puede ser null o Undefined");
         }
 
         $cliente->setId((int) $_GET['id']);
@@ -198,10 +180,7 @@ abstract class ClienteControlador
         }
         else
         {
-            $_SESSION["CRUDMVC_ERROR"] = $cliente->getError();
-
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error($cliente->getError());
         }
     }
 
@@ -264,17 +243,17 @@ abstract class ClienteControlador
             $cliente->setProvincia($_POST['provincia']);
             $cliente->setFechaNacimiento($objetoFecha);  
         }
-        catch (InvalidArgumentException $e)
-        {
-            $_SESSION["CRUDMVC_ERROR"] = $e->getMessage();
-            header("location: " . URLSITE . "view/error.php");
-            die();
-        }
         catch (Exception $e)
         {
-            $_SESSION["CRUDMVC_ERROR"] = $e->getMessage();
-            header("location: " . URLSITE . "view/error.php");
-            die();
+            ClienteControlador::error($e->getMessage());
         }
+    }
+
+    public static function error(string $mensaje): void
+    {
+        $_SESSION['CRUDMVC_ERROR'] = $mensaje;
+
+        header("location: " . URLSITE . "view/error.php");
+        die();
     }
 }

@@ -53,7 +53,7 @@ class ClienteModelo extends BD
             "direccion"         => $this->direccion,
             "poblacion"         => $this->poblacion,
             "provincia"         => $this->provincia,
-            "fecha_nacimiento"  => $this->getFechaNacimientoParaBD(),
+            "fecha_nacimiento"  => $this->fechaNacimiento->format('Y-m-d'),
         ];
 
         return $this->_ejecutar($sql, $param);
@@ -87,7 +87,7 @@ class ClienteModelo extends BD
             "direccion"         => $this->direccion,
             "poblacion"         => $this->poblacion,
             "provincia"         => $this->provincia,
-            "fecha_nacimiento"  => $this->getFechaNacimientoParaBD(),            
+            "fecha_nacimiento"  => $this->fechaNacimiento->format('Y-m-d'),            
         ];
 
         return $this->_ejecutar($sql, $param);
@@ -309,11 +309,6 @@ class ClienteModelo extends BD
     public function setFechaNacimiento(DateTime $fechaNacimiento) : void
     {
         $this->fechaNacimiento = $fechaNacimiento;
-    }
-
-    public function getFechaNacimientoParaBD() : string
-    {
-        return $this->fechaNacimiento->format('Y-m-d');
     }
 
 }

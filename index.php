@@ -28,6 +28,8 @@ require_once("config.php");
 // Requiere los controladores
 require_once("controller/app.controlador.php");
 require_once("controller/cliente.controlador.php");
+require_once("controller/factura.controlador.php");
+require_once("controller/lineafactura.controlador.php");
 
 
 $controlador = '';
@@ -69,6 +71,30 @@ if (isset($_GET['c']))
             else
             {
                 AppControlador::index();
+            }
+
+            break;
+
+        case 'factura':
+            if (method_exists('FacturaControlador', $metodo))
+            {
+                FacturaControlador::{$metodo}();
+            }
+            else
+            {
+                FacturaControlador::index();
+            }
+
+            break;
+
+        case 'linea_factura':
+            if (method_exists('LineaFacturaControlador', $metodo))
+            {
+                LineaFacturaControlador::{$metodo}();
+            }
+            else
+            {
+                LineaFacturaControlador::index();
             }
 
             break;

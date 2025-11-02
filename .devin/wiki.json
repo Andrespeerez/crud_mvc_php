@@ -1,0 +1,43 @@
+{
+  "repo_notes": [
+    {
+      "content": "Este repositorio implementa el patrón de diseño arquitectónico Modelo-Vista-Controlador (MVC). El propósito principal es la clara separación de las preocupaciones: la lógica de datos (Modelo), la interfaz de usuario (Vista) y el manejo de la lógica de negocio/flujo (Controlador). Aunque se utiliza Bootstrap para el estilo (Vista), el core del proyecto es la aplicación de la arquitectura MVC."
+    }
+  ],
+  "pages": [
+    {
+      "title": "Arquitectura del Proyecto (Patrón MVC)",
+      "purpose": "Introducción de alto nivel a la estructura del proyecto y la implementación del patrón MVC, explicando la separación de responsabilidades.",
+      "page_notes": []
+    },
+    {
+      "title": "El Modelo (Model)",
+      "purpose": "Documentación de la capa de datos y lógica de negocio. Explica cómo los Modelos interactúan con la base de datos y cómo manejan la validación de datos. Se debe enlazar a la carpeta /Modelos (o similar).",
+      "page_notes": []
+    },
+    {
+      "title": "El Controlador (Controller)",
+      "purpose": "Documentación de la capa que maneja la lógica de negocio y la interacción. Explica cómo los Controladores reciben peticiones, invocan a los Modelos y seleccionan la Vista adecuada. Se debe enlazar a la carpeta /Controladores (o similar).",
+      "page_notes": []
+    },
+    {
+      "title": "La Vista (View)",
+      "purpose": "Documentación de la capa de presentación. Explica cómo las Vistas usan los datos proporcionados por el Controlador para generar la interfaz de usuario (HTML, incluyendo el uso de Bootstrap). Se debe enlazar a la carpeta /Vistas (o similar).",
+      "page_notes": []
+    },
+    {
+      "title": "Flujo de Peticiones y Ciclo de Vida MVC",
+      "purpose": "Explica el ciclo completo de una petición HTTP desde que llega al Controlador, pasa por el Modelo y regresa a través de la Vista.",
+      "page_notes": [
+        {
+          "content": "Diagrama de flujo del patrón MVC: Petición -> Router -> Controlador -> Modelo -> (Base de Datos) -> Modelo -> Controlador -> Vista -> Respuesta."
+        }
+      ]
+    },
+    {
+      "title": "Uso de Bootstrap (Front-end)",
+      "purpose": "Mención específica sobre el rol de la librería Bootstrap: se utiliza *únicamente* para aplicar estilos y *no* es el foco principal de la arquitectura del proyecto.",
+      "page_notes": []
+    }
+  ]
+}

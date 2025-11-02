@@ -8,7 +8,7 @@ FLUSH PRIVILEGES;
 
 USE mvc_crud;
 
-DROP TABLE IF EXISTS cliente;
+-- DROP TABLE IF EXISTS cliente;
 
 CREATE TABLE cliente(
 	id int(11) primary key auto_increment,

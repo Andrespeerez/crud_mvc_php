@@ -8,5 +8,5 @@ CREATE TABLE factura(
     numero int(11),
     fecha datetime,
 
-    FOREIGN KEY factura_cliente_id_fk REFERENCES cliente(id)
+    CONSTRAINT factura_cliente_id_fk FOREIGN KEY (cliente_id) REFERENCES cliente(id)
 );

@@ -96,15 +96,25 @@ class FacturaModelo extends BD
         return $this->_ejecutar($sql, $param);
     }
 
+    /**
+     * Selecciona 1 o todos los registros
+     * 
+     * Si el objeto FacturaModelo tiene definido ID, solo traerá un solo registro
+     * Si no tiene definido ID, se traerá todos los registros de la base de datos
+     * 
+     * @return bool True si la consulta es exitosa, False si falla o está vacío
+     */
     public function seleccionar() : bool
     {
-        $sql = "SELECT * FROM factura";
+        $sql = "SELECT f.id as id, f.cliente_id as cliente_id, f.numero as numero, f.fecha as fecha, CONCAT_WS(' ', c.nombre, c.apellidos) as nombre_cliente 
+                FROM factura as f
+                JOIN cliente as c ON f.cliente_id = c.id";
 
         $param = [];
 
         if ($this->id != 0)
         {
-            $sql .= " WHERE id = :id";
+            $sql .= " WHERE f.id = :id";
             $param = [
                 "id" => $this->id,
             ];
@@ -133,6 +143,14 @@ class FacturaModelo extends BD
         return true;
     }
 
+    public function seleccionaUltimoNumero() : int
+    {
+        $sql = "SELECT max(numero) as max_numero FROM factura";
+
+        $numero = $this->_consultar($sql, []);
+
+        return (int) $numero[0]->max_numero;
+    }
 
 
     // GETTERS Y SETTERS

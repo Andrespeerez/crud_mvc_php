@@ -14,20 +14,36 @@ require("view/layout/header.php")
 
 <br>
 
-<h2>NUEVA EDITAR</h2>
+<h2>EDITAR FACTURA</h2>
 
 <form action="<?= URLSITE . "index.php?c=factura&m=modificar&id=" . $factura->getId() ?>" method="post">
-    <label for="cliente_id" class="form-label">Id Cliente</label>
-    <input type="number" class="form-control" name="cliente_id" id="cliente_id" value="<?= $factura->getClienteId() ?>">
 
-    <label for="numero" class="form-label">Número</label>
-    <input type="number" class="form-control" name="numero" id="numero" value="<?= $factura->getNumero() ?>">
+    <?php
+    if ($clientes->filas !== null && count($clientes->filas) > 0) :
 
-    <label for="fecha" class="form-label">Fecha</label>
-    <input type="date" class="form-control" name="fecha" id="fecha" value="<?= $factura->getFecha()->format('Y-m-d') ?>">
+        // cliente actual
+        $id_cliente = (int) $factura->getClienteId();
 
-    <br>
-    <button type="submit" class="btn btn-primary">Aceptar</button>
+        $resultado  = array_filter($clientes->filas, function($fila) use ($id_cliente) {
+            return $fila->id === $id_cliente;
+        });
+    ?>
+        <label for="cliente_id" class="form-label">Cliente</label>
+        <select class="form-select" aria-label="Default select example" name="cliente_id" id="cliente_id" required>
+            <option value="<?= (int) $resultado[0]->id ?>" selected><?= htmlspecialchars($resultado[0]->nombre) ?></option>
+            <?php
+                foreach($clientes->filas as $c):
+            ?>
+            <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <label for="fecha" class="form-label">Fecha</label>
+        <input type="date" class="form-control" name="fecha" id="fecha" value="<?= htmlspecialchars($factura->getFecha()->format('Y-m-d')) ?>">       
+
+        <br>
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+    <?php endif; ?>
     <a href="<?= URLSITE . "index.php?c=factura" ?>">
         <button type="button" class="btn btn-outline-secondary float end">Cancelar</button>
     </a>

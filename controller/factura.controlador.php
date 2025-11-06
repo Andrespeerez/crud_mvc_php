@@ -26,7 +26,6 @@ abstract class FacturaControlador
     public static function index(): void
     {
         $factura = new FacturaModelo();
-
         $factura->seleccionar();
 
         require_once("view/factura/factura.index.php");
@@ -34,7 +33,15 @@ abstract class FacturaControlador
 
     public static function nuevo(): void
     {
-        require_once("view/factura/factura.nuevo.php");
+        $clientes = new ClienteModelo();
+        if ($clientes->seleccionar())
+        {
+            require_once("view/factura/factura.nuevo.php");
+        }
+        else
+        {
+            FacturaControlador::error("ERROR: No se pueden obtener los clientes");
+        }
     }
 
     public static function insertar(): void
@@ -58,7 +65,7 @@ abstract class FacturaControlador
 
         $factura = new FacturaModelo();
 
-        FacturaControlador::validarYAsignar($factura);
+        FacturaControlador::validarYAsignar($factura, true);
 
         if ($factura->insertar() == 1)
         {
@@ -89,7 +96,7 @@ abstract class FacturaControlador
         }
         else
         {
-            FacturaControlador::error("No existe ningún registro con ese id");
+            FacturaControlador::error($factura->getError());
         }
     }
 
@@ -103,6 +110,10 @@ abstract class FacturaControlador
         }
 
         $factura->setId( (int) $_GET['id']);
+
+        $clientes = new ClienteModelo();
+        $clientes->seleccionar(); // Selecciona todos los clientes
+
 
         if ($factura->seleccionar())
         {
@@ -150,12 +161,18 @@ abstract class FacturaControlador
      * @throws \InvalidArgumentException Fecha formato incorrecta
      * @return void
      */
-    public static function validarYAsignar(FacturaModelo &$factura) : void
+    public static function validarYAsignar(FacturaModelo &$factura, bool $insertar = false) : void
     {
         try
         {
             $factura->setClienteId((int) $_POST['cliente_id']);
-            $factura->setNumero((int) $_POST['numero']);;
+
+            if ($insertar == true)
+            {
+                $numero = $factura->seleccionaUltimoNumero();
+
+                $factura->setNumero( $numero + 1);
+            }
 
             $fechaRecibida = $_POST['fecha'];
             $formatoEntrada = 'Y-m-d';

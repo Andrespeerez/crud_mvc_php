@@ -2,11 +2,13 @@
 
 <h1>FACTURAS</h1>
 
+<br>
+
 <table class="table table-striped table-hover" id="tabla">
     <thead>
         <tr class="text-center">
             <th>Id</th>
-            <th>Cliente ID</th>
+            <th>Nombre Cliente</th>
             <th>Número</th>
             <th>Fecha</th>
             <th></th>
@@ -14,15 +16,17 @@
     </thead>
     <tbody>
         <?php 
-
         if ($factura->filas) :
             foreach ($factura->filas as $fila):
         ?>
         <tr class="text-center">
             <td style="text-align: right; width: 5%;"><?= htmlspecialchars($fila->id) ?></td>
-            <td><?= htmlspecialchars($fila->cliente_id) ?></td>
+            <td><?= htmlspecialchars($fila->nombre_cliente) ?></td>
             <td><?= htmlspecialchars($fila->numero) ?></td>
-            <td><?= htmlspecialchars($fila->fecha) ?></td>
+            <td><?php 
+                $fecha = date_create($fila->fecha);
+                echo htmlspecialchars(date_format($fecha, 'd-m-Y'));
+            ?></td>
             <td>
                 <a href="<?= URLSITE . 'index.php?c=factura&m=editar&id=' . $fila->id ?>">
                     <button type="button" class="btn btn-success">
@@ -34,8 +38,8 @@
                         Borrar
                     </button>
                 </a>
-                <a href="<?= URLSITE . 'index.php?c=linea_factura&id_factura=' . $fila->id ?>">
-                    <button type="button" class="btn btn-secondary">
+                <a href="<?= URLSITE . 'index.php?c=linea_factura&factura_id=' . $fila->id ?>">
+                    <button type="button" class="btn btn-warning">
                         Ver Lineas Factura
                     </button>
                 </a>
@@ -55,7 +59,7 @@
     <tfoot>
         <tr>
             <td colspan="5">
-                <a href="<?= URLSITE . '?c=factura&m=nuevo' ?>">
+                <a href="<?= URLSITE . 'index.php?c=factura&m=nuevo' ?>">
                     <button type="button" class="btn btn-primary">
                         Nuevo
                     </button>

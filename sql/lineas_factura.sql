@@ -6,11 +6,11 @@ CREATE TABLE lineas_factura(
 	id int(11) primary key auto_increment,
     factura_id int(11),
     referencia int(11),
-    descripcion datetime,  -- tiene que estar mal
+    descripcion varchar(32),  
     cantidad decimal(10,3),
     precio decimal(10,2),
     iva decimal(5,2),
     importe decimal(10,2),
 
-    FOREIGN KEY lineas_factura_factura_id_fk REFERENCES factura(id)
+    CONSTRAINT lineas_factura_factura_id_fk FOREIGN KEY (factura_id) REFERENCES factura(id)
 );

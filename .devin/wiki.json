@@ -1,0 +1,51 @@
+{
+    "project_name": "crud_mvc_php",
+    "description": "Aplicación de gestión de facturas y clientes que implementa el patrón Modelo-Vista-Controlador (MVC) con una capa de persistencia basada en PDO (PHP Data Objects).",
+    "architecture": {
+        "pattern": "Modelo-Vista-Controlador (MVC)",
+        "layer_breakdown": {
+            "controller": "Capa de Coordinación. Recibe peticiones de index.php, llama a los Modelos/Managers y selecciona la Vista.",
+            "model": "Capa de Persistencia y Dominio. Contiene las clases de la entidad (e.g., FacturaModelo) y la lógica para interactuar con la Base de Datos a través de la clase BD.",
+            "view": "Capa de Presentación. Contiene el HTML y PHP necesario para mostrar los datos al usuario."
+        },
+        "data_flow": "Cliente -> index.php (Router) -> Controlador -> Modelo (DB) -> Controlador -> Vista (Renderización) -> Cliente"
+    },
+    "entry_point": "index.php",
+    "database": {
+        "type": "MySQL / MariaDB (A través de PDO)",
+        "connection_class": "model/BD.php",
+        "key_tables": [
+            "cliente",
+            "factura",
+            "lineas_factura"
+        ],
+        "notes": "La conexión utiliza PDO, lo que permite consultas parametrizadas para evitar ataques de inyección SQL. La clase BD encapsula los métodos _ejecutar y _consultar."
+    },
+    "key_directories_and_files": {
+        "root": {
+            "index.php": "Punto de entrada único (Front Controller). Contiene la lógica de enrutamiento basada en parámetros c (controlador) y m (método)."
+        },
+        "controller/": {
+            "app.controlador.php" : "Controlador base de la aplicación, (landing page)",
+            "cliente.controlador.php": "Maneja todas las operaciones relacionadas con Cliente (index, nuevo, editar, borrar).",
+            "factura.controlador.php": "Maneja todas las operaciones relacionadas con Facturas (index, nuevo, editar, borrar).",
+            "lineafactura.controlador.php": "Maneja las operaciones de las Líneas de Factura (index, nuevo, editar, borrar)."
+        },
+        "model/": {
+            "BD.php": "Clase base de la capa de persistencia. Maneja la conexión PDO, los métodos de consulta (_consultar) y ejecución (_ejecutar).",
+            "cliente.modelo.php": "Maneja la lógica de negocio y las consultas CRUD para la entidad Cliente.",
+            "factura.modelo.php": "Maneja la lógica de negocio y las consultas CRUD para la entidad Factura.",
+            "lineafactura.modelo.php": "Maneja las consultas CRUD para las Líneas de Factura (entidad hija)."
+        },
+        "view/": {
+            "view/cliente/.php": "Vistas específicas para Cliente (listado, formulario de edición, etc.).",
+            "view/lineafactura/.php": "Vistas específicas para Lineas Facturas (listado, formulario de edición, etc.).",
+            "view/factura/.php": "Vistas específicas para Facturas (listado, formulario de edición, etc.).",
+            "view/layout/.php": "Plantillas generales como header y footer."
+        }
+    },
+    "security_notes": [
+        "Uso de PDO y parámetros para prevenir inyección SQL.",
+        "Uso de htmlspecialchars() en las vistas para prevenir ataques XSS."
+    ]
+}

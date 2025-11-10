@@ -24,7 +24,7 @@ require("view/layout/header.php");
 
 
     <?php
-    if ($factura->filas !== null && count($factura->filas) > 0) :
+    if ($facturas !== null && count($facturas) > 0) :
     ?>
 
         <label for="descripcion" class="form-label">Descripción</label>

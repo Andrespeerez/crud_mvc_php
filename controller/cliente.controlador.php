@@ -37,9 +37,11 @@ abstract class ClienteControlador
      */
     public static function index() : void
     {
-        $cliente = new ClienteModelo();
+        $clienteObject = new ClienteModelo();
 
-        $cliente->seleccionar();  // Pide al modelo que busque en la bbdd y me devuelva resultados
+        $clienteObject->seleccionar();  // Pide al modelo que busque en la bbdd y me devuelva resultados
+
+        $clientes = $clienteObject->filas;  // Array de Objectos (DTO)
 
         require_once("view/cliente/cliente.index.php");
     }

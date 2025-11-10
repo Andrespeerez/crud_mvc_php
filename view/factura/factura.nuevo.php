@@ -24,13 +24,13 @@ require("view/layout/header.php");
 
     
     <?php
-    if ($clientes->filas !== null && count($clientes->filas) > 0) :
+    if ($clientes !== null && count($clientes) > 0) :
     ?>
         <label for="cliente_id" class="form-label">Cliente</label>
         <select class="form-select" aria-label="Default select example" name="cliente_id" id="cliente_id" required>
             <option selected>Selecciona un cliente</option>
             <?php
-                foreach($clientes->filas as $c):
+                foreach($clientes as $c):
             ?>
             <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) ?></option>
             <?php endforeach; ?>

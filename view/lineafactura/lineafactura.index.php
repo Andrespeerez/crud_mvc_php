@@ -33,8 +33,8 @@ $factura_id = (int) $_GET['factura_id'];
     </thead>
     <tbody class="text-center">
         <?php 
-        if ($lineasFactura->filas) :
-            foreach ($lineasFactura->filas as $fila):
+        if ($lineasFactura) :
+            foreach ($lineasFactura as $fila):
         ?>
         <tr>
             <td style="text-align: right; width: 5%;"><?= htmlspecialchars($fila->id) ?></td>

@@ -25,17 +25,20 @@ abstract class FacturaControlador
 {
     public static function index(): void
     {
-        $factura = new FacturaModelo();
-        $factura->seleccionar();
+        $facturaObject = new FacturaModelo();
+        $facturaObject->seleccionar();
+
+        $facturas = $facturaObject->filas;  // Array de Objectos (DTO)
 
         require_once("view/factura/factura.index.php");
     }
 
     public static function nuevo(): void
     {
-        $clientes = new ClienteModelo();
-        if ($clientes->seleccionar())
+        $clientesObject = new ClienteModelo();
+        if ($clientesObject->seleccionar())
         {
+            $clientes = $clientesObject->filas;
             require_once("view/factura/factura.nuevo.php");
         }
         else

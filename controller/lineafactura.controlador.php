@@ -19,27 +19,31 @@ abstract class LineaFacturaControlador
 {
     public static function index(): void
     {
-        $lineasFactura = new LineaFacturaModelo();
-        $lineasFactura->setFacturaId((int) $_GET['factura_id']);
-        $lineasFactura->seleccionar();
+        $lineasFacturaObject = new LineaFacturaModelo();
+        $lineasFacturaObject->setFacturaId((int) $_GET['factura_id']);
+        $lineasFacturaObject->seleccionar();
+
+        $lineasFactura =  $lineasFacturaObject->filas;
 
         require_once("view/lineafactura/lineafactura.index.php");
     }
 
     public static function nuevo() : void
     {
-        $factura = new FacturaModelo();
+        $facturaObject = new FacturaModelo();
 
         if (! isset($_GET['factura_id']))
         {
             FacturaControlador::error("ERROR: No se ha recibido identificador de Factura");
         }
 
-        $factura->setId((int) $_GET['factura_id']);
+        $facturaObject->setId((int) $_GET['factura_id']);
 
 
-        if ($factura->seleccionar())
+        if ($facturaObject->seleccionar())
         {
+            $facturas = $facturaObject->filas;
+
             require_once("view/lineafactura/lineafactura.nuevo.php");
         }
         else

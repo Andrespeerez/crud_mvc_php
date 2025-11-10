@@ -21,8 +21,8 @@
     </thead>
     <tbody>
         <?php 
-        if ($cliente->filas) :
-            foreach ($cliente->filas as $fila) :
+        if ($clientes) :
+            foreach ($clientes as $fila) :
         ?>
         <tr class="text-center">
             <td style="text-align: right; width: 5%;"><?= htmlspecialchars($fila->id) ?></td>

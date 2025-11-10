@@ -16,8 +16,8 @@
     </thead>
     <tbody>
         <?php 
-        if ($factura->filas) :
-            foreach ($factura->filas as $fila):
+        if ($facturas) :
+            foreach ($facturas as $fila):
         ?>
         <tr class="text-center">
             <td style="text-align: right; width: 5%;"><?= htmlspecialchars($fila->id) ?></td>

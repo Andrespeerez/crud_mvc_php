@@ -185,6 +185,56 @@ abstract class ClienteControlador
     }
 
     /**
+     * Exporta la lista de clientes en un archivo csv
+     * 
+     * Cuando reciba una petición de c=cliente?m=exportar
+     * seleciona todos los clientes: clentes->seleccionar();
+     * Devuelve el fichero al cliente
+     * 
+     * @return void
+     */
+    static function exportar()
+    {
+        // Nos creamos el objeto clientes para acceder a la tabla clientes de la BBDD.
+        $clientes = new ClienteModelo();
+
+        // Seleccionamos todos los clientes.
+        $clientes->seleccionar();
+
+        try
+        {
+            // Abrimos el fichero clientes.csv en modo escritura.
+            $fichero = fopen("clientes.csv", "w");
+
+            // Para cada fila de la tabla...
+            foreach($clientes->filas as $fila)
+            {
+                // creamos la línea a exportar y...
+                $cadena = "$fila->id#$fila->nombre#$fila->apellidos\n";
+
+                // la guardamos la línea en el fichero.
+                fputs($fichero, $cadena);
+            }
+        }
+        finally
+        {
+            // Cerramos el fichero.
+            fclose($fichero);
+        }
+       
+        // Finalmente exportamos el fichero.
+        $rutaFichero = 'exports/clientes.csv';
+        $fichero = basename($rutaFichero);
+
+        // octet-stream es un stream de datos binarios genérico
+        header("Content-Type: application/octet-stream");
+        header("Content-Length: " . filesize($rutaFichero));
+        header("Content-Disposition: attachment; filename=" . $fichero);
+
+        readfile($rutaFichero);
+    }
+
+    /**
      * Asigna parámetros recibidos al objeto ClienteModelo
      * 
      * Intenta asignar los parámetros a las propiedades de la clase ClienteModelo

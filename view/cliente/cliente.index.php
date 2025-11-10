@@ -66,6 +66,10 @@
                             Nuevo
                         </button>
                     </a>
+
+                    <a href="index.php?c=cliente&m=exportar">
+                        <button type="button" class="btn btn-success">Exportar</button>
+                    </a>
                 </td>
             </tr>
         </tfoot>

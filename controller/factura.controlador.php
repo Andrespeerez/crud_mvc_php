@@ -203,6 +203,12 @@ abstract class FacturaControlador
         }
     }
 
+    /**
+     * Refirigue la vista a la página de Error
+     * 
+     * @param string $mensaje Mensaje de error a mostrar
+     * @return never
+     */
     public static function error(string $mensaje): void
     {
         $_SESSION['CRUDMVC_ERROR'] = $mensaje;

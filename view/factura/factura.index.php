@@ -57,8 +57,8 @@ if ($hasClienteID)
                 $fecha = date_create($fila->fecha);
                 echo htmlspecialchars(date_format($fecha, 'd-m-Y'));
             ?></td>
-            <td></td>
-            <td></td>
+            <td style="text-align: right;"><?= htmlspecialchars($fila->base) . ' €' ?></td>
+            <td style="text-align: right;"><?= htmlspecialchars($fila->importe) . ' €' ?></td>
             <td>
                 <?php if (isset($cliente_id)):?>
                     <a href="<?= URLSITE . 'index.php?c=factura&m=editar&id=' . $fila->id . '&cliente_id=' . $cliente_id ?>">

@@ -20,6 +20,7 @@ if (session_status() == PHP_SESSION_NONE)
 
 require_once("model/cliente.modelo.php");
 require_once("model/factura.modelo.php");
+require_once("model/lineafactura.modelo.php");
 
 abstract class FacturaControlador
 {
@@ -34,9 +35,11 @@ abstract class FacturaControlador
             $facturaObject->setClienteId((int) $_GET['cliente_id']); // Solo facturas de dicho cliente
         }
 
-        $facturaObject->seleccionar(); // 
+        $facturaObject->seleccionar();
 
         $facturas = $facturaObject->filas;  // Array de Objectos (DTO)
+
+        FacturaControlador::calcularBaseYTotal($facturas);
 
         require_once("view/factura/factura.index.php");
     }
@@ -233,5 +236,59 @@ abstract class FacturaControlador
             header("location: " . URLSITE . "index.php?c=factura");
 
         die();
+    }
+    
+
+    /**
+     * Procedimiento:
+     * Añade los campos "base" y "importe" totales a la factura
+     * 
+     * Muta el array que recibe
+     * 
+     * Dependencias con lineafactura.modelo.php
+     * 
+     * @param array $facturaDTOs Array de facturas
+     * @return void
+     */
+    public static function calcularBaseYTotal(array &$facturaDTOs) : void
+    {   
+        // Doble foreach! Rendimiento mal! 
+        // Mejor un service y que se guarde en base de datos
+        // TODO: FacturaService que se encargue de actualizar base y importe cada vez que se
+        // TODO: cambie o agrege algo nuevo en LineasFactura para dicha factura
+
+        // Por cada factura ...
+        foreach ($facturaDTOs as &$factura)
+        {
+            $factura->base = 0;
+            $factura->importe = 0;
+
+            $lineasFacturaObject = new LineaFacturaModelo();
+            $lineasFacturaObject->setFacturaId($factura->id);
+
+            // Obtengo sus lineas factura
+            if ($lineasFacturaObject->seleccionar() && $lineasFacturaObject->filas !== null)
+            {
+                $lineasFactura = $lineasFacturaObject->filas;
+
+                $base = 0;
+                $importe = 0;
+                // Sumo cada linea factura para obtener la base total y su importe total
+                foreach ($lineasFactura as $linea)
+                {
+                    $base += $linea->precio * $linea->cantidad;
+                    $importe += $linea->importe;
+                }
+
+                // Asigno los valores al DTO que recibirá la vista
+                $factura->base = $base;
+                $factura->importe = $importe;
+            }
+            else
+            {
+                // fallo en la búsqueda
+                FacturaControlador::error($lineasFacturaObject->getError());
+            }
+        }
     }
 }

@@ -34,7 +34,7 @@ abstract class LineaFacturaControlador
 
         if (! isset($_GET['factura_id']))
         {
-            FacturaControlador::error("ERROR: No se ha recibido identificador de Factura");
+            LineaFacturaControlador::error("ERROR: No se ha recibido identificador de Factura");
         }
 
         $facturaObject->setId((int) $_GET['factura_id']);
@@ -48,7 +48,7 @@ abstract class LineaFacturaControlador
         }
         else
         {
-            FacturaControlador::error("ERROR: No se pueden obtener los clientes");
+            LineaFacturaControlador::error("ERROR: No se pueden obtener los clientes");
         }
     }
 
@@ -56,7 +56,7 @@ abstract class LineaFacturaControlador
     {
         if (! isset($_GET['factura_id']))
         {
-            FacturaControlador::error("ERROR: No se ha recibido identificador de Factura");
+            LineaFacturaControlador::error("ERROR: No se ha recibido identificador de Factura");
         }
 
         
@@ -76,8 +76,7 @@ abstract class LineaFacturaControlador
 
         if ($lineaFactura->insertar() == 1)
         {
-            header("location: " . URLSITE . "index.php?c=linea_factura&factura_id=" . $_GET['factura_id']);
-            die();
+            LineaFacturaControlador::redirigirIndex();
         }
         else
         {
@@ -103,12 +102,11 @@ abstract class LineaFacturaControlador
 
         if( $lineafactura->borrar() != 0 )
         {
-            header("location: " . URLSITE . "index.php?c=linea_factura&factura_id=" . $_GET['factura_id']);
-            die();
+            LineaFacturaControlador::redirigirIndex();
         }
         else
         {
-            FacturaControlador::error($lineafactura->getError());
+            LineaFacturaControlador::error($lineafactura->getError());
         }
     }
 
@@ -130,7 +128,7 @@ abstract class LineaFacturaControlador
         }
         else
         {
-            FacturaControlador::error("No se encontró la linea factura con dicho id");
+            LineaFacturaControlador::error("No se encontró la linea factura con dicho id");
         }   
     }
 
@@ -140,21 +138,21 @@ abstract class LineaFacturaControlador
 
         if (! isset($_GET['id']))
         {
-            FacturaControlador::error("El ID de Línea Factura no puede ser NULL o Undefined");
+            LineaFacturaControlador::error("El ID de Línea Factura no puede ser NULL o Undefined");
         }
 
         $lineafactura->setId((int) $_GET['id']);
 
         if (! $lineafactura->seleccionar())
         {
-            FacturaControlador::error("No se encontró la línea factura con dicho Id");
+            LineaFacturaControlador::error("No se encontró la línea factura con dicho Id");
         }
 
         LineaFacturaControlador::validarYAsignar($lineafactura);
 
         if ( ($lineafactura->modificar() == 1) || $lineafactura->getError() == null)
         {
-            header("location: " . URLSITE . "index.php?c=linea_factura&factura_id=" . $_GET['factura_id']);
+            LineaFacturaControlador::redirigirIndex();
         }
         else
         {
@@ -194,11 +192,31 @@ abstract class LineaFacturaControlador
     }
 
 
+    /**
+     * Redirigue la vista de Error.
+     * 
+     * @return never
+     */
     public static function error(string $mensaje): void
     {
         $_SESSION['CRUDMVC_ERROR'] = $mensaje;
 
         header("location: " . URLSITE . "view/error.php");
+        die();
+    }
+
+    /**
+     * Redirigue la vista al Index.
+     * 
+     * @return never
+     */
+    public static function redirigirIndex() : void
+    {
+        if (isset($_GET['cliente_id']))
+                header("location: " . URLSITE . "index.php?c=linea_factura&factura_id=" . (int) $_GET['factura_id'] . "&cliente_id=" . (int) $_GET['cliente_id']);
+        else
+            header("location: " . URLSITE . "index.php?c=linea_factura&factura_id=" . (int) $_GET['factura_id'] );
+
         die();
     }
 }

@@ -75,6 +75,10 @@
                     <a href="index.php?c=cliente&m=exportar">
                         <button type="button" class="btn btn-success">Exportar</button>
                     </a>
+
+                    <a href="index.php?c=cliente&m=imprimir" target="_blank">
+                        <button type="button" class="btn btn-warning">Imprimir</button>
+                    </a>
                 </td>
             </tr>
         </tfoot>

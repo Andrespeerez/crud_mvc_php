@@ -25,6 +25,7 @@ if (session_status() == PHP_SESSION_NONE)
 
 
 require_once("model/cliente.modelo.php");
+require_once("pdfs/clientespdf.php");
 
 
 abstract class ClienteControlador
@@ -234,6 +235,27 @@ abstract class ClienteControlador
         header("Content-Disposition: attachment; filename=" . $fichero);
 
         readfile($rutaFichero);
+    }
+
+    public static function imprimir() : void
+    {
+        $clientes = new ClienteModelo();
+
+        $clientes->seleccionar();
+
+        $pdf = new ClientesPDF();
+
+        $pdf->AliasNbPages();
+
+        $pdf->AddPage();
+
+        $pdf->SetFont('Arial', '', 12);
+        
+        $pdf->filas = $clientes->filas;
+
+        $pdf->imprimir();
+
+        $pdf->Output();
     }
 
     /**

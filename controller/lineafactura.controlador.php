@@ -23,7 +23,7 @@ abstract class LineaFacturaControlador
         $lineasFacturaObject->setFacturaId((int) $_GET['factura_id']);
         $lineasFacturaObject->seleccionar();
 
-        $lineasFactura =  $lineasFacturaObject->filas;
+        $lineasFactura = $lineasFacturaObject->filas;
 
         require_once("view/lineafactura/lineafactura.index.php");
     }

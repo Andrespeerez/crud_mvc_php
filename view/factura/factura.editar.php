@@ -7,7 +7,18 @@
  * 
  * @author Andrés Pérez Guardiola
  */
-require("view/layout/header.php")
+require("view/layout/header.php");
+
+/**
+ * Comprueba si se le ha pasado parámetro cliente_id
+ * 
+ * @var bool Ha recibido parámetro cliente_id?
+ */
+$hasClienteID = isset($_GET['cliente_id']);
+if ($hasClienteID)
+{
+    $cliente_id = (int) $_GET['cliente_id']; // asigna el parámetro 
+}
 ?>
 
 <h1>FACTURAS</h1>
@@ -16,37 +27,51 @@ require("view/layout/header.php")
 
 <h2>EDITAR FACTURA</h2>
 
-<form action="<?= URLSITE . "index.php?c=factura&m=modificar&id=" . $factura->getId() ?>" method="post">
+<?php if ($hasClienteID):?>
+    <form action="<?= URLSITE . "index.php?c=factura&m=modificar&id=" . $facturas[0]->id . '&cliente_id=' . $cliente_id?>" method="post">
+<?php else: ?>
+    <form action="<?= URLSITE . "index.php?c=factura&m=modificar&id=" . $facturas[0]->id ?>" method="post">
+<?php endif; ?>
 
-    <?php
-    if ($clientes->filas !== null && count($clientes->filas) > 0) :
-
-        // cliente actual
-        $id_cliente = (int) $factura->getClienteId();
-
-        $resultado  = array_filter($clientes->filas, function($fila) use ($id_cliente) {
-            return $fila->id === $id_cliente;
-        });
-    ?>
         <label for="cliente_id" class="form-label">Cliente</label>
         <select class="form-select" aria-label="Default select example" name="cliente_id" id="cliente_id" required>
-            <option value="<?= (int) $resultado[0]->id ?>" selected><?= htmlspecialchars($resultado[0]->nombre) ?></option>
-            <?php
-                foreach($clientes->filas as $c):
-            ?>
-            <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) ?></option>
+            <?php foreach($clientes as $c): ?>
+                <?php if ($c->id == $cliente_id): ?>
+                    <option value="<?= (int) $cliente_id ?>" selected><?= htmlspecialchars($c->nombre) . ' ' . htmlspecialchars($c->apellidos) ?></option>
+                <?php else: ?>
+                    <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) . ' ' . htmlspecialchars($c->apellidos) ?></option>
+                <?php endif;?>
             <?php endforeach; ?>
         </select>
 
         <label for="fecha" class="form-label">Fecha</label>
-        <input type="date" class="form-control" name="fecha" id="fecha" value="<?= htmlspecialchars($factura->getFecha()->format('Y-m-d')) ?>">       
+        <?php 
+        if (! $facturas[0]->fecha == null)
+        {
+            $fecha = new DateTime($facturas[0]->fecha);
+            $fechaString = $fecha->format("Y-m-d");
+        }
+            
+        ?>
+        <input type="date" class="form-control" name="fecha" id="fecha" value="<?= htmlspecialchars($fechaString) ?>">       
 
         <br>
         <button type="submit" class="btn btn-primary">Aceptar</button>
-    <?php endif; ?>
-    <a href="<?= URLSITE . "index.php?c=factura" ?>">
-        <button type="button" class="btn btn-outline-secondary float end">Cancelar</button>
-    </a>
-</form>
+
+    
+        <?php 
+        // Cancelar me devuelve a la vista de las facturas del cliente
+        if ($hasClienteID): ?>
+            <a href="<?= URLSITE . 'index.php?c=factura&cliente_id=' . $cliente_id ?>">
+                <button type="button" class="btn btn-outline-secondary float end">Cancelar</button>
+            </a>
+        <?php 
+        // Cancelar me devuelve a la vista de todas las facturas
+        else: ?>
+            <a href="<?= URLSITE . 'index.php?c=factura' ?>">
+                <button type="button" class="btn btn-outline-secondary float end">Cancelar</button>
+            </a>
+        <?php endif;?>
+    </form>
 
 <?php require("view/layout/footer.php"); ?>

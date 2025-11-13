@@ -26,7 +26,15 @@ abstract class FacturaControlador
     public static function index(): void
     {
         $facturaObject = new FacturaModelo();
-        $facturaObject->seleccionar();
+
+        // Si recibo ID de cliente
+        // Solo muestro las facturas de dicho cliente
+        if (isset($_GET['cliente_id']))
+        {
+            $facturaObject->setClienteId((int) $_GET['cliente_id']); // Solo facturas de dicho cliente
+        }
+
+        $facturaObject->seleccionar(); // 
 
         $facturas = $facturaObject->filas;  // Array de Objectos (DTO)
 
@@ -72,8 +80,7 @@ abstract class FacturaControlador
 
         if ($factura->insertar() == 1)
         {
-            header("location: " . URLSITE . "index.php?c=factura");
-            die();
+            FacturaControlador::redirigirIndex();
         }
         else
         {
@@ -94,8 +101,7 @@ abstract class FacturaControlador
 
         if( $factura->borrar() == 1 )
         {
-            header("location: " . URLSITE . "index.php?c=factura");
-            die();
+            FacturaControlador::redirigirIndex();
         }
         else
         {
@@ -105,21 +111,23 @@ abstract class FacturaControlador
 
     public static function editar(): void
     {
-        $factura = new FacturaModelo();
+        $facturaObjeto = new FacturaModelo();
 
         if (! isset($_GET['id']))
         {
             FacturaControlador::error("El id de Factura no puede ser NULL o Undefined");
         }
 
-        $factura->setId( (int) $_GET['id']);
+        $facturaObjeto->setId( (int) $_GET['id']);
 
-        $clientes = new ClienteModelo();
-        $clientes->seleccionar(); // Selecciona todos los clientes
+        $clienteObjeto = new ClienteModelo();
+        $clienteObjeto->seleccionar(); // Selecciona todos los clientes
 
-
-        if ($factura->seleccionar())
+        if ($facturaObjeto->seleccionar())
         {
+            $facturas = $facturaObjeto->filas; // Enviamos un array de DTOs
+            $clientes = $clienteObjeto->filas; // Enviamos un array de DTOs
+
             require_once("view/factura/factura.editar.php");
         }
         else
@@ -148,7 +156,7 @@ abstract class FacturaControlador
 
         if ( ($factura->modificar() == 1) || $factura->getError() == null) 
         {
-            header("location: " . URLSITE . "index.php?c=factura");
+            FacturaControlador::redirigirIndex();
         }
         else
         {
@@ -200,6 +208,24 @@ abstract class FacturaControlador
         $_SESSION['CRUDMVC_ERROR'] = $mensaje;
 
         header("location: " . URLSITE . "view/error.php");
+        die();
+    }
+
+    /**
+     * Redirigue la vista al Index.
+     * 
+     * Si recibió un parámetro de cliente_id, mostrará solo las facturas de dicho cliente
+     * Si no recibe dicho parámetro, devolverá todas las facturas
+     * 
+     * @return never
+     */
+    public static function redirigirIndex() : void
+    {
+        if (isset($_GET['cliente_id']))
+                header("location: " . URLSITE . "index.php?c=factura&cliente_id=" . (int) $_GET['cliente_id']);
+        else
+            header("location: " . URLSITE . "index.php?c=factura");
+
         die();
     }
 }

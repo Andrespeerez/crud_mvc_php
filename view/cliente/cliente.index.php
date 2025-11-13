@@ -46,6 +46,11 @@
                             Borrar
                     </button>
                 </a>
+                <a href="<?= URLSITE . 'index.php?c=factura&cliente_id=' . $fila->id ?>">
+                    <button type="button" class="btn btn-primary">
+                            Ver Facturas
+                    </button>
+                </a>
             </td>
         </tr>
         <?php 

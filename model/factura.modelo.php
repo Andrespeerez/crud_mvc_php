@@ -111,7 +111,11 @@ class FacturaModelo extends BD
                 JOIN cliente as c ON f.cliente_id = c.id";
 
         $param = [];
+    
+        // Caso de Búsqueda 0, Todas las facturas
 
+        // Caso de Búsqueda 1
+        // Búsqueda de Factura por ID, solo devuelve un resultado
         if ($this->id != 0)
         {
             $sql .= " WHERE f.id = :id";
@@ -120,13 +124,28 @@ class FacturaModelo extends BD
             ];
         }
 
+        // Caso de Búsqueda 2
+        // Búsqueda de Facturas que pertenezcan a un Cliente, todas las facturas de un cliente
+        if ($this->clienteId != 0)
+        {
+            $sql .= " WHERE f.cliente_id = :cliente_id";
+            $param = [
+                "cliente_id" => $this->clienteId,
+            ];
+        }
+
         $this->filas = $this->_consultar($sql, $param);
 
+        // Salgo prematuramente si no encuentro registros
+        // Devuelvo true, porque la búsqueda ha sido existosa, aunque no arroja resultados
         if ($this->filas == false)
         {
             return true;
         }
 
+        // Rehidratar el modelo con datos de la base de datos
+        // Solo cuando estoy recibiendo un solo registro de la base de datos
+        // i.e. cuando busco una factura por ID
         if ($this->id != 0)
         {
             $objeto = $this->filas[0];
@@ -143,6 +162,15 @@ class FacturaModelo extends BD
         return true;
     }
 
+
+    /**
+     * Devuelve el número de factura mayor en la base de datos
+     * 
+     * Utilizo una numeración de factura incremental. 
+     * Las nuevas facturas reciben el número de factura = (número máximo + 1).
+     * 
+     * @return int Número de factura mayor
+     */
     public function seleccionaUltimoNumero() : int
     {
         $sql = "SELECT max(numero) as max_numero FROM factura";

@@ -21,6 +21,7 @@ if (session_status() == PHP_SESSION_NONE)
 require_once("model/cliente.modelo.php");
 require_once("model/factura.modelo.php");
 require_once("model/lineafactura.modelo.php");
+require_once("pdfs/facturapdf.php");
 
 abstract class FacturaControlador
 {
@@ -166,6 +167,34 @@ abstract class FacturaControlador
             FacturaControlador::error($factura->getError());
         }
 
+    }
+
+    public static function imprimir() : void
+    {
+        $facturas = new FacturaModelo();
+        $facturas->setId((int) $_GET['factura_id']);
+        $facturas->seleccionar();
+
+        FacturaControlador::calcularBaseYTotal($facturas->filas);
+
+        $lineas = new LineaFacturaModelo();
+        $lineas->setFacturaId((int) $_GET['factura_id']);
+        $lineas->seleccionar();
+
+        $pdf = new FacturaPDF();
+
+        $pdf->AliasNbPages();
+
+        $pdf->AddPage();
+
+        $pdf->SetFont('Arial', '', 12);
+        
+        $pdf->factura = $facturas->filas[0];
+        $pdf->filas = $lineas->filas;
+
+        $pdf->imprimir();
+
+        $pdf->Output();
     }
 
     /**

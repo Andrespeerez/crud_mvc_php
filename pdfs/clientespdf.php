@@ -7,11 +7,8 @@
  * a partir de los datos recibidos de la tabla clientes.
  * 
  * Las columnas devueltas son: 
- * Nombre
- * Apellidos
- * Dirección
- * Problación
- * Provincia
+ * Nombre Apellidos
+ * Email
  * 
  * @author Andrés Pérez Guardiola 2º DAW Semi
  */
@@ -72,7 +69,7 @@ class ClientesPDF extends PDF_MC_Table
 
     public function imprimir()
     {
-        $this->SetWidths(array(ClientesPDF::$col1Width, ClientesPDF::$col2Width, 40));
+        $this->SetWidths(array(ClientesPDF::$col1Width, ClientesPDF::$col2Width));
 
         if ($this->filas)
         {

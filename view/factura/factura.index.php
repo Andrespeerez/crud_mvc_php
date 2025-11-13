@@ -61,38 +61,44 @@ if ($hasClienteID)
             <td style="text-align: right;"><?= htmlspecialchars($fila->importe) . ' €' ?></td>
             <td>
                 <?php if (isset($cliente_id)):?>
-                    <a href="<?= URLSITE . 'index.php?c=factura&m=editar&id=' . $fila->id . '&cliente_id=' . $cliente_id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=factura&m=editar&id=' . (int) $fila->id . '&cliente_id=' . (int) $cliente_id ?>">
                         <button type="button" class="btn btn-success">
                             Editar
                         </button>
                     </a>
-                    <a href="<?= URLSITE . 'index.php?c=factura&m=borrar&id=' . $fila->id . '&cliente_id=' . $cliente_id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=factura&m=borrar&id=' . (int) $fila->id . '&cliente_id=' . (int) $cliente_id ?>">
                         <button type="button" class="btn btn-danger" onclick="return confirm('¿Estás seguro de borrar el registro?');">
                             Borrar
                         </button>
                     </a>
-                    <a href="<?= URLSITE . 'index.php?c=linea_factura&factura_id=' . $fila->id . '&cliente_id=' . $cliente_id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=linea_factura&factura_id=' . (int) $fila->id . '&cliente_id=' . (int) $cliente_id ?>">
                         <button type="button" class="btn btn-warning">
                             Ver Lineas Factura
                         </button>
                     </a>
                 <?php else:?>
-                    <a href="<?= URLSITE . 'index.php?c=factura&m=editar&id=' . $fila->id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=factura&m=editar&id=' . (int) $fila->id ?>">
                         <button type="button" class="btn btn-success">
                             Editar
                         </button>
                     </a>
-                    <a href="<?= URLSITE . 'index.php?c=factura&m=borrar&id=' . $fila->id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=factura&m=borrar&id=' . (int) $fila->id ?>">
                         <button type="button" class="btn btn-danger" onclick="return confirm('¿Estás seguro de borrar el registro?');">
                             Borrar
                         </button>
                     </a>
-                    <a href="<?= URLSITE . 'index.php?c=linea_factura&factura_id=' . $fila->id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=linea_factura&factura_id=' . (int) $fila->id ?>">
                         <button type="button" class="btn btn-warning">
                             Ver Lineas Factura
                         </button>
                     </a>
                 <?php endif;?>
+
+                <a href="<?= URLSITE . 'index.php?c=factura&m=imprimir&factura_id=' . (int) $fila->id ?>" target="_blank">
+                    <button type="button" class="btn btn-primary">
+                        Imprimir
+                    </button>
+                </a>
 
             </td>
         </tr>
@@ -111,7 +117,7 @@ if ($hasClienteID)
         <tr>
             <td colspan="7">
                 <?php if (isset($cliente_id)):?>
-                    <a href="<?= URLSITE . 'index.php?c=factura&m=nuevo&cliente_id=' . $cliente_id ?>">
+                    <a href="<?= URLSITE . 'index.php?c=factura&m=nuevo&cliente_id=' . (int) $cliente_id ?>">
                         <button type="button" class="btn btn-primary">
                             Nuevo
                         </button>

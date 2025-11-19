@@ -11,7 +11,6 @@
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Email</th>
-            <th>Contraseña</th>
             <th>Dirección</th>
             <th>Población</th>
             <th>Provincia</th>
@@ -29,7 +28,6 @@
             <td><?= htmlspecialchars($fila->nombre) ?></td>
             <td><?= htmlspecialchars($fila->apellidos) ?></td>
             <td><?= htmlspecialchars($fila->email) ?></td>
-            <td><?= htmlspecialchars($fila->contrasena) ?></td>
             <td><?= htmlspecialchars($fila->direccion) ?></td>
             <td><?= htmlspecialchars($fila->poblacion) ?></td>
             <td><?= htmlspecialchars($fila->provincia) ?></td>
@@ -65,7 +63,7 @@
         ?>
         <tfoot>
             <tr>
-                <td colspan="10">
+                <td colspan="9">
                     <a href="<?= URLSITE . '?c=cliente&m=nuevo' ?>">
                         <button type="button" class="btn btn-primary">
                             Nuevo

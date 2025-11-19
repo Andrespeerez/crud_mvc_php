@@ -212,9 +212,9 @@ abstract class FacturaControlador
 
             if ($insertar == true)
             {
-                $numero = $factura->seleccionaUltimoNumero();
+                $numero = (int) $factura->seleccionaUltimoNumero();
 
-                $factura->setNumero( $numero + 1);
+                $factura->setNumero( (int) $numero + 1);
             }
 
             $fechaRecibida = $_POST['fecha'];

@@ -150,8 +150,8 @@ class FacturaModelo extends BD
         {
             $objeto = $this->filas[0];
 
-            $this->setClienteId($objeto->cliente_id);
-            $this->setNumero($objeto->numero);
+            $this->setClienteId((int) $objeto->cliente_id);
+            $this->setNumero((int) $objeto->numero);
 
             $fechaString = $objeto->fecha;
             $fechaDataTime = DateTime::createFromFormat('Y-m-d H:i:s', $fechaString);

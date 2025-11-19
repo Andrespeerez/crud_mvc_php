@@ -73,7 +73,7 @@ class ClienteModelo extends BD
             return 0;
         }
 
-        $sql = "UPDATE cliente SET email = :email, contrasena = :contrasena, nombre = :nombre,
+        $sql = "UPDATE cliente SET email = :email, nombre = :nombre,
                 apellidos = :apellidos, direccion = :direccion, poblacion = :poblacion,
                 provincia = :provincia, fecha_nacimiento = :fecha_nacimiento      
                 WHERE id = :id";
@@ -81,7 +81,6 @@ class ClienteModelo extends BD
         $param = [
             "id"                => $this->id,
             "email"             => $this->email,
-            "contrasena"        => $this->contrasenaHash,
             "nombre"            => $this->nombre, 
             "apellidos"         => $this->apellidos,
             "direccion"         => $this->direccion,

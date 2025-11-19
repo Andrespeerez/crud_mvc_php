@@ -207,7 +207,7 @@ abstract class ClienteControlador
         try
         {
             // Abrimos el fichero clientes.csv en modo escritura.
-            $fichero = fopen("clientes.csv", "w");
+            $fichero = fopen("exports/clientes.csv", "w");
 
             // Para cada fila de la tabla...
             foreach($clientes->filas as $fila)

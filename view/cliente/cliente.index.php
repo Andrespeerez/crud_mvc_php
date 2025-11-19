@@ -31,7 +31,9 @@
             <td><?= htmlspecialchars($fila->direccion) ?></td>
             <td><?= htmlspecialchars($fila->poblacion) ?></td>
             <td><?= htmlspecialchars($fila->provincia) ?></td>
-            <td><?= htmlspecialchars($fila->fecha_nacimiento) ?></td>
+            <td><?php 
+            $fechaNacimiento = date_create($fila->fecha_nacimiento);
+            echo htmlspecialchars(date_format($fechaNacimiento, 'd-m-Y')); ?></td>
             <td>
                 <a href="<?= URLSITE . 'index.php?c=cliente&m=editar&id=' . $fila->id ?>">
                     <button type="button" class="btn btn-success">

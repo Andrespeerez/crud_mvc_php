@@ -49,9 +49,9 @@ if ($hasClienteID)
                 <?php
                     foreach($clientes as $c):
                         if ($c->id == $cliente_id): ?>
-                            <option value="<?= (int) $c->id ?>" selected><?= htmlspecialchars($c->nombre) . ' ' . htmlspecialchars($c->apellidos) ?></option>
+                            <option value="<?= (int) $c->id ?>" selected><?= htmlspecialchars($c->nombre_cliente) ?></option>
                         <?php else: ?>
-                            <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) . ' ' . htmlspecialchars($c->apellidos) ?></option>
+                            <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre_cliente) ?></option>
                         <?php endif;?>
                 <?php endforeach; ?>
             <?php else : ?>
@@ -59,7 +59,7 @@ if ($hasClienteID)
                 <?php
                     foreach($clientes as $c):
                 ?>
-                    <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) ?></option>
+                    <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre_cliente) ?></option>
                 <?php endforeach; ?>
             <?php endif; ?>
         </select>

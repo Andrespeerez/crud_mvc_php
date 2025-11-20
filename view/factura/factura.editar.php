@@ -37,9 +37,9 @@ if ($hasClienteID)
         <select class="form-select" aria-label="Default select example" name="cliente_id" id="cliente_id" required>
             <?php foreach($clientes as $c): ?>
                 <?php if ($c->id == $cliente_id): ?>
-                    <option value="<?= (int) $cliente_id ?>" selected><?= htmlspecialchars($c->nombre) . ' ' . htmlspecialchars($c->apellidos) ?></option>
+                    <option value="<?= (int) $cliente_id ?>" selected><?= htmlspecialchars($c->nombre_cliente) ?></option>
                 <?php else: ?>
-                    <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre) . ' ' . htmlspecialchars($c->apellidos) ?></option>
+                    <option value="<?= (int) $c->id ?>"><?= htmlspecialchars($c->nombre_cliente) ?></option>
                 <?php endif;?>
             <?php endforeach; ?>
         </select>

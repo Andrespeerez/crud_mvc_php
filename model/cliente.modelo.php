@@ -172,6 +172,25 @@ class ClienteModelo extends BD
         return true;
     }
 
+    public function seleccionarIdNombre() : bool
+    {
+        // Devuelve id y nombre . ' ' . apellidos como nombre_cliente
+        $sql = "SELECT id, CONCAT_WS(' ', nombre, apellidos) as nombre_cliente FROM Cliente ORDER BY nombre_cliente ASC";
+
+        $param = [];
+
+        $this->filas = $this->_consultar($sql, $param);
+
+        // No hemos recibido ninguna fila
+        if ($this->filas == null)
+        {
+            return false;
+        }
+
+        // recibimos resultados. correcto
+        return true;
+    }
+
     /*
         GETTERS Y SETTERS
     */

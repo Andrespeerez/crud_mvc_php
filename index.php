@@ -13,7 +13,6 @@
 
 declare(strict_types=1);
 
-
 // Inicializa la sesión
 if (session_status() === PHP_SESSION_NONE)
 {
@@ -30,7 +29,7 @@ require_once("controller/app.controlador.php");
 require_once("controller/cliente.controlador.php");
 require_once("controller/factura.controlador.php");
 require_once("controller/lineafactura.controlador.php");
-
+require_once("controller/articulo.controlador.php");
 
 $controlador = '';
 if (isset($_GET['c']))
@@ -95,6 +94,18 @@ if (isset($_GET['c']))
             else
             {
                 LineaFacturaControlador::index();
+            }
+
+            break;
+
+        case 'articulo':
+            if (method_exists('ArticuloControlador', $metodo))
+            {
+                ArticuloControlador::{$metodo}();
+            }
+            else
+            {
+                ArticuloControlador::index();
             }
 
             break;

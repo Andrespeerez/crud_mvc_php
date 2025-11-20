@@ -26,6 +26,8 @@
                             <li><a class="drowpdown-item" href="<?= URLSITE . 'index.php?c=cliente' ?>">Clientes...</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="drowpdown-item" href="<?= URLSITE . 'index.php?c=factura' ?>">Facturas...</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="drowpdown-item" href="<?= URLSITE . 'index.php?c=articulo' ?>">Artículos...</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -14,6 +14,7 @@ if (session_status() == PHP_SESSION_NONE)
 
 require_once("model/lineafactura.modelo.php");
 require_once("model/factura.modelo.php");
+require_once("model/articulo.modelo.php");
 
 abstract class LineaFacturaControlador
 {
@@ -39,16 +40,17 @@ abstract class LineaFacturaControlador
 
         $facturaObject->setId((int) $_GET['factura_id']);
 
-
-        if ($facturaObject->seleccionar())
+        $articuloObject = new ArticuloModelo();
+        if ($facturaObject->seleccionar() && $articuloObject->seleccionar())
         {
             $facturas = $facturaObject->filas;
+            $articulos = $articuloObject->filas;
 
             require_once("view/lineafactura/lineafactura.nuevo.php");
         }
         else
         {
-            LineaFacturaControlador::error("ERROR: No se pueden obtener los clientes");
+            LineaFacturaControlador::error("ERROR: No se pueden obtener los Datos");
         }
     }
 
@@ -71,6 +73,21 @@ abstract class LineaFacturaControlador
         }
 
         $lineaFactura = new LineaFacturaModelo();
+
+        $articulo = new ArticuloModelo();
+        $articulo->setId((int) $_POST["articulo"]);
+
+        if (! $articulo->seleccionar())
+        {
+            LineaFacturaControlador::error("ERROR: No existe dicho artículo");
+        }
+        else
+        {
+            $_POST['descripcion'] = $articulo->getDescripcion();
+            $_POST['precio'] = $articulo->getPrecio();
+            $_POST['iva'] = $articulo->getIva();
+        }
+
 
         LineaFacturaControlador::validarYAsignar($lineaFactura, true);
 

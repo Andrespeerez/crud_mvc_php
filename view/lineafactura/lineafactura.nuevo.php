@@ -42,17 +42,15 @@ if ($hasClienteId)
     if ($facturas !== null && count($facturas) > 0) :
     ?>
 
-        <label for="descripcion" class="form-label">Descripción</label>
-        <input type="text" class="form-control" name="descripcion" id="descripcion" require>
+        <label for="articulo" class="form-label">Artículo</label>
+        <select name="articulo" id="articulo" class="form-select" aria-label="Default select example" required>
+            <?php foreach($articulos as $articulo): ?>
+                <option value="<?= $articulo->id ?>"> <?= htmlspecialchars($articulo->referencia . ' - ' . $articulo->descripcion) ?> </option>
+            <?php endforeach; ?>
+        </select>
 
         <label for="cantidad" class="form-label">Cantidad</label>
         <input type="number" class="form-control" name="cantidad" id="cantidad" step="any" require>
-
-        <label for="precio" class="form-label">Precio</label>
-        <input type="number" class="form-control" name="precio" id="precio" step="any" require>
-
-        <label for="iva" class="form-label">IVA</label>
-        <input type="number" class="form-control" name="iva" id="iva" step="any" require>
 
         <br>
         <button type="submit" class="btn btn-primary">Aceptar</button>

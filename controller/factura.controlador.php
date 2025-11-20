@@ -7,6 +7,8 @@
  * para cada petición que realice el usuario
  * 
  * Emplea el modelo factura.modelo.php para la conexión con base de datos
+ * Emplea cliente.modelo.php para mandar opciones de cliente a las vistas editar y nuevo
+ * Emplea lineafactura.modelo.php para calcular el importe total de la factura
  * 
  * @author Andrés Pérez Guardiola 2º DAW Semi
  */

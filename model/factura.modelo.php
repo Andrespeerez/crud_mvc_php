@@ -138,9 +138,9 @@ class FacturaModelo extends BD
 
         // Salgo prematuramente si no encuentro registros
         // Devuelvo true, porque la búsqueda ha sido existosa, aunque no arroja resultados
-        if ($this->filas == false)
+        if ($this->filas == null)
         {
-            return true;
+            return false;
         }
 
         // Rehidratar el modelo con datos de la base de datos

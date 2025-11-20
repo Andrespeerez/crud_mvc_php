@@ -120,9 +120,9 @@ class LineaFacturaModelo extends BD
 
         $this->filas = $this->_consultar($sql, $param);
 
-        if ($this->filas == false)
+        if ($this->filas == null)
         {
-            return true;
+            return false;
         }
 
         if ($this->id != 0)

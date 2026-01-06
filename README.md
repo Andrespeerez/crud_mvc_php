@@ -170,8 +170,11 @@ Enrutamiento mediante los parámetros `c` (controlador) y `m` (método)
     - `insertar`, `modificar` <-- SOLO PETICIONES POST
 
 Ejemplos:
+
 http://localhost:8080/index.php?c=cliente                   # Equivalente a c=cliente&m=index
+
 http://localhost:8080/index.php?c=cliente&m=nuevo
+
 http://localhost:8080/index.php?c=cliente&m=editar&id=1     # Editar cliente con Id=1
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

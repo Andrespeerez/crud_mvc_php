@@ -188,6 +188,7 @@ Este proyecto se ha desarrollado con objetivo de aprendizaje Formación Profesio
 ## AUTORÍA
 
 Andrés Pérez Guardiola
+
 AndresPeerez (GitHub)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

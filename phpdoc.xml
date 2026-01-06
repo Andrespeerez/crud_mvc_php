@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+>
+    <title>Proyecto MVC</title>
+    <paths>
+        <output>docs/.build</output>
+    </paths>
+    <version number="latest">
+        <api>
+            <source dsn=".">
+                <path>controller</path>
+                <path>model</path>
+                <path>view</path>
+                <path>index.php</path>
+            </source>
+            <ignore>
+                <path>vendor</path>
+                <path>fpdf</path>
+            </ignore>
+        </api>
+    </version>
+</phpdocumentor>

@@ -114,6 +114,7 @@ abstract class BD
      * @param string $query Sentencia SQL a ejecutar
      * @param array $params Parámetros
      * @return int Numero de filas afectadas
+     * @deprecated No usar más
      */
     protected function _ejecutar(string $query, array $params = []) : int
     {
